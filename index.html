@@ -19,6 +19,25 @@
 <body>
 
     <div class="app-container">
+        <!-- Mobile Header -->
+        <header class="mobile-header" style="position: relative;">
+            <button class="mobile-menu-btn" onclick="app.toggleSidebar()" style="padding-left: 0;">
+                <i data-lucide="menu" size="24"></i>
+            </button>
+            <div class="sidebar-brand" style="margin: 0; position: absolute; left: 50%; transform: translateX(-50%);">
+                <i data-lucide="flame" class="text-primary" style="color: var(--bombeiros-red);"></i>
+                <div style="display:flex; flex-direction:column; gap:0.1rem;">
+                    <span style="line-height:1;">CBMTO</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Mobile Breadcrumb -->
+        <nav id="mobile-breadcrumb" class="mobile-breadcrumb"></nav>
+
+        <!-- Sidebar Overlay -->
+        <div id="sidebar-overlay" class="sidebar-overlay" onclick="app.toggleSidebar()"></div>
+
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-brand">

@@ -109,6 +109,32 @@ class App {
 
     // --- Navigation ---
 
+    toggleSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        
+        if (sidebar && overlay) {
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
+            // Re-render icons se o menu abrir e montar ícones novos
+            if(sidebar.classList.contains('show')) this.setupIcons();
+        }
+    }
+
+    closeSidebarIfMobile() {
+        if (window.innerWidth <= 1024) {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            if (sidebar) sidebar.classList.remove('show');
+            if (overlay) overlay.classList.remove('show');
+        }
+    }
+
+    closeDetailsMobile() {
+        const pane = document.getElementById('objective-details-pane');
+        if (pane) pane.classList.remove('active');
+    }
+
     goBack() {
         document.getElementById('view-dashboard').style.display = 'block';
         document.getElementById('view-detail').style.display = 'none';
@@ -118,14 +144,31 @@ class App {
     goHome() {
         this.currentObjectiveId = null;
         this.currentInitiativeId = null;
+        this.closeSidebarIfMobile();
         this.renderDashboard();
     }
 
     // --- Rendering ---
 
+    renderMobileBreadcrumb() {
+        const bc = document.getElementById('mobile-breadcrumb');
+        if (!bc) return;
+        
+        let html = `<a onclick="app.goHome()">Início</a>`;
+        
+        const topObj = this.data.objectives.find(o => o.id === this.currentObjectiveId);
+        if (topObj) {
+            html += `<span class="breadcrumb-sep">/</span> <a onclick="app.closeDetailsMobile()" style="color:var(--foreground);">${topObj.title}</a>`;
+        }
+        
+        bc.innerHTML = html;
+    }
+
     renderDashboard() {
         const container = document.getElementById('view-dashboard');
         container.style.display = 'block';
+        
+        this.renderMobileBreadcrumb();
 
         // Calculate Stats
         let totalInitiatives = 0;
@@ -350,6 +393,7 @@ class App {
     selectObjective(id) {
         this.currentObjectiveId = id;
         this.currentInitiativeId = null;
+        this.closeSidebarIfMobile();
         this.renderDashboard();
     }
 
@@ -365,6 +409,10 @@ class App {
         this.currentInitiativeId = id;
         this.renderDashboard(); // Re-render to update selected state in list
         this.renderDetails(id, true);
+        
+        // Show details pane on mobile
+        const pane = document.getElementById('objective-details-pane');
+        if (pane) pane.classList.add('active');
     }
 
     showDetailsEmptyState() {
@@ -394,8 +442,26 @@ class App {
 
         const dateStr = obj.dueDate ? new Date(obj.dueDate).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) : '';
         const titleEl = document.getElementById('detail-title');
+        
+        // Find the parent objective for the breadcrumb
+        let parentObj = null;
+        for (const top of this.data.objectives) {
+            if (top.initiatives && top.initiatives.find(i => i.id === obj.id)) {
+                parentObj = top;
+                break;
+            }
+        }
+        
         titleEl.innerHTML = `
+            <div class="mobile-only-breadcrumb">
+                <span onclick="app.goHome()" style="cursor:pointer">Início</span>
+                <span style="margin:0 0.4rem; opacity:0.5; color:var(--muted-foreground)">/</span>
+                <span onclick="app.closeDetailsMobile()" style="cursor:pointer; color:var(--foreground);">${parentObj ? parentObj.title : 'Objetivo'}</span>
+            </div>
             <div class="details-title-row">
+                <button class="btn-ghost btn-icon mobile-only-inline" onclick="app.closeDetailsMobile()" style="margin-right:0.25rem;">
+                    <i data-lucide="arrow-left" size="20"></i>
+                </button>
                 <h2>${obj.title}</h2>
                 <button class="btn-ghost btn-icon" onclick="app.editObjective('${obj.id}')" style="width:1.5rem; height:1.5rem;">
                     <i data-lucide="edit-3" size="16"></i>

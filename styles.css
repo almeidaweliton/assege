@@ -668,24 +668,171 @@ textarea.form-input {
   padding: 2rem;
 }
 
-/* Mobile responsive */
-@media (max-width: 768px) {
+/* ====== Mobile Responsive Layout ====== */
+
+.mobile-header {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #1e293b;
+  color: #f8fafc;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.mobile-menu-btn {
+  background: transparent;
+  border: none;
+  color: #f8fafc;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 45;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.sidebar-overlay.show {
+  display: block;
+  opacity: 1;
+}
+
+.mobile-only-inline { display: none; }
+.mobile-breadcrumb { display: none; }
+.mobile-only-breadcrumb { display: none; }
+
+@media (max-width: 1024px) {
+  .mobile-only-inline { display: inline-flex; }
+  
+  .mobile-only-breadcrumb {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--primary);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    white-space: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .mobile-only-breadcrumb span {
+      display: inline-block;
+  }
+
+  .mobile-breadcrumb {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    background: #f1f5f9;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    white-space: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+  }
+  .mobile-breadcrumb::-webkit-scrollbar { display: none; /* Safari/Chrome */ }
+  .mobile-breadcrumb a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .mobile-breadcrumb .breadcrumb-sep {
+    margin: 0 0.5rem;
+    opacity: 0.5;
+  }
+  
+
+  .app-container {
+    flex-direction: column;
+  }
+
+  .mobile-header {
+    display: flex;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    z-index: 50;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .sidebar.show {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 1rem 0.75rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .header div {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: stretch;
+  }
+  
+  .header button {
+    flex: 1;
+    white-space: nowrap;
+  }
+
+  .stats-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 0.75rem;
+    padding-bottom: 0.5rem;
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .stats-grid::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+
+  .stats-grid .card {
+    flex: 0 0 auto;
+    width: 65vw; /* 65% garante que "um e meio" cards apareçam */
+    scroll-snap-align: start;
+    padding: 0.85rem;
+  }
+
+  .stats-grid .stat-value {
+    font-size: 1.5rem;
+  }
+
   .dashboard-split-view {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   .details-pane {
     display: none;
-    /* Hide details on mobile initially or handle via JS */
   }
 
   .details-pane.active {
-    display: block;
+    display: flex;
     position: fixed;
     inset: 0;
-    z-index: 50;
+    z-index: 60;
     margin: 0;
     border-radius: 0;
+    max-height: 100vh;
   }
 }
 
