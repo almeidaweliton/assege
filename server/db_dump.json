@@ -1,0 +1,68 @@
+{
+  "objectives": [
+    {
+      "id": "obj_1773070331654",
+      "title": "Aprimorar Resposta",
+      "description": "",
+      "owner": "",
+      "dueDate": "",
+      "createdAt": "2026-03-09T15:32:11.654Z"
+    }
+  ],
+  "initiatives": [
+    {
+      "id": "1773070756190",
+      "title": "Realizar treinamentos e simulados periódicos de resposta a emergências e desastres.",
+      "owner": "COB",
+      "description": "",
+      "dueDate": "2026-12-31",
+      "createdAt": "2026-03-09T15:39:16.190Z",
+      "objectiveId": "obj_1773070331654"
+    },
+    {
+      "id": "1773071010867",
+      "title": "Investir na manutenção preventiva e modernização da frota e dos equipamentos operacionais.",
+      "owner": "COB",
+      "description": "",
+      "dueDate": "2026-12-31",
+      "createdAt": "2026-03-09T15:43:30.867Z",
+      "objectiveId": "obj_1773070331654"
+    },
+    {
+      "id": "1773071031858",
+      "title": "Criar e padronizar os Procedimentos Operacionais (POPs) conforme as melhores práticas.",
+      "owner": "COB",
+      "description": "",
+      "dueDate": "2026-12-31",
+      "createdAt": "2026-03-09T15:43:51.858Z",
+      "objectiveId": "obj_1773070331654"
+    },
+    {
+      "id": "1773071047393",
+      "title": "Ampliar a cobertura de bases operacionais em regiões estratégicas e vulneráveis.",
+      "owner": "COB",
+      "description": "",
+      "dueDate": "2026-12-31",
+      "createdAt": "2026-03-09T15:44:07.393Z",
+      "objectiveId": "obj_1773070331654"
+    },
+    {
+      "id": "1773071070728",
+      "title": "Implantar sistema de monitoramento de indicadores de desempenho operacional.",
+      "owner": "COB",
+      "description": "",
+      "dueDate": "2026-12-31",
+      "createdAt": "2026-03-09T15:44:30.728Z",
+      "objectiveId": "obj_1773070331654"
+    },
+    {
+      "id": "1773071089956",
+      "title": "Criar estratégias de aumento de efetivo, e expansão dos serviços operacionais.",
+      "owner": "COB",
+      "description": "",
+      "dueDate": "2026-12-31",
+      "createdAt": "2026-03-09T15:44:49.956Z",
+      "objectiveId": "obj_1773070331654"
+    }
+  ]
+}

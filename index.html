@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CBMTO Estratégico</title>
+
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i data-lucide="flame" class="text-primary" style="color: var(--bombeiros-red);"></i>
+                <div style="display:flex; flex-direction:column; gap:0.1rem;">
+                    <span style="line-height:1;">CBMTO</span>
+                    <span
+                        style="font-size:0.6rem; color:var(--muted-foreground); font-weight:500; letter-spacing:0; line-height:1;">Plan.
+                        Estratégico</span>
+                </div>
+            </div>
+
+            <div
+                style="margin: 1.5rem 0 0.5rem 1rem; font-size: 0.7rem; font-weight: 700; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: 0.05em;">
+                Objetivos Estratégicos
+            </div>
+            <nav id="objectives-nav" style="display: flex; flex-direction: column; gap: 0.25rem; padding: 0 0.5rem;">
+                <!-- Objectives list injected here -->
+            </nav>
+
+            <div
+                style="margin: 1.5rem 0 0.5rem 1rem; font-size: 0.7rem; font-weight: 700; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: 0.05em;">
+                Menu
+            </div>
+            <nav style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <a class="nav-item active" onclick="app.goHome()">
+                    <i data-lucide="home" size="18"></i> Início
+                </a>
+                <a class="nav-item" onclick="app.downloadBackup()" style="color: var(--primary);">
+                    <i data-lucide="file-spreadsheet" size="18"></i> Exportar CSV
+                </a>
+                <a class="nav-item">
+                    <i data-lucide="settings" size="18"></i> Configurações
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Dashboard View -->
+            <div id="view-dashboard">
+                <header class="header">
+                    <h1>Assessoria de Planejamento</h1>
+                    <p style="color: var(--muted-foreground)">Visão geral de gestão de projetos</p>
+                    <div style="display:flex; gap:0.5rem">
+                        <button class="btn btn-secondary" onclick="app.openTopObjectiveModal()">
+                            <i data-lucide="plus" size="16"></i> Novo Objetivo
+                        </button>
+                        <button class="btn" onclick="app.openObjectiveModal()">
+                            <i data-lucide="plus" size="16"></i> Nova Iniciativa
+                        </button>
+                    </div>
+                </header>
+
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="card">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem">
+                            <div class="stat-label">Total de Iniciativas</div>
+                            <i data-lucide="target" class="text-muted-foreground" size="18"></i>
+                        </div>
+                        <div class="stat-value" id="stat-total">0</div>
+                    </div>
+                    <div class="card">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem">
+                            <div class="stat-label">Iniciativas Concluídas</div>
+                            <i data-lucide="check-circle-2" class="text-muted-foreground" size="18"></i>
+                        </div>
+                        <div class="stat-value" id="stat-obj-completed">0</div>
+                    </div>
+                    <div class="card">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem">
+                            <div class="stat-label">Vencendo em 30 dias</div>
+                            <i data-lucide="clock" class="text-muted-foreground" size="18"></i>
+                        </div>
+                        <div class="stat-value" id="stat-expiring">0</div>
+                    </div>
+                    <div class="card">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem">
+                            <div class="stat-label">Iniciativas Vencidas</div>
+                            <i data-lucide="alert-triangle" style="color:var(--destructive)" size="18"></i>
+                        </div>
+                        <div class="stat-value" id="stat-expired" style="color: var(--destructive)">0</div>
+                    </div>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem">
+                    <h2 style="font-size:1.2rem; margin:0">Minhas Iniciativas</h2>
+                    <div style="display:flex; gap:0.5rem">
+                        <div style="position:relative">
+                            <i data-lucide="search" size="16"
+                                style="position:absolute; left:0.75rem; top:50%; transform:translateY(-50%); color:var(--muted-foreground)"></i>
+                            <input type="text" id="search-input" placeholder="Buscar..." class="form-input"
+                                style="padding-left:2.5rem; height:2.25rem; font-size:0.85rem; width:200px"
+                                oninput="app.handleSearch(this.value)">
+                        </div>
+                        <select id="filter-status" class="form-input"
+                            style="height:2.25rem; font-size:0.85rem; width:130px; cursor:pointer"
+                            onchange="app.handleFilter(this.value)">
+                            <option value="all">Todos</option>
+                            <option value="pending">Pendentes</option>
+                            <option value="completed">Concluídos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="dashboard-split-view">
+                    <!-- Left Side: List -->
+                    <div id="objectives-list" class="sidebar-list">
+                        <!-- Injected via JS -->
+                    </div>
+
+                    <!-- Right Side: Details Pane -->
+                    <div id="objective-details-pane" class="details-pane">
+                        <div id="details-empty-state" class="details-empty">
+                            <i data-lucide="mouse-pointer-click" size="48" style="opacity:0.2; margin-bottom:1rem"></i>
+                            <p>Selecione uma iniciativa ao lado para ver as ações e detalhes.</p>
+                        </div>
+
+                        <div id="details-content" style="display: none;">
+                            <div class="details-header">
+                                <div class="details-info">
+                                    <div id="detail-title">
+                                        <!-- Injected via JS -->
+                                    </div>
+                                    <p id="detail-desc" class="details-desc">Descrição...</p>
+                                </div>
+                                <div class="details-progress-box">
+                                    <div class="label">Progresso</div>
+                                    <div id="detail-percent" class="value">0%</div>
+                                </div>
+                            </div>
+
+                            <div class="compact-progress-bar">
+                                <div id="detail-progress-bar" class="compact-progress-fill" style="width: 0%"></div>
+                            </div>
+
+                            <div class="actions-section-header">
+                                <h3><i data-lucide="list-checks" size="18"></i> Ações</h3>
+                                <button class="btn btn-secondary" onclick="app.openTaskModal()"
+                                    style="height: 2rem; font-size: 0.75rem;">
+                                    <i data-lucide="plus" size="14"></i> Adicionar
+                                </button>
+                            </div>
+
+                            <div id="task-list" class="task-list">
+                                <!-- Tasks -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Removed separate Detail View -->
+
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal-top-objective" class="modal-overlay">
+        <div class="modal">
+            <div style="display:flex; justify-content:space-between; margin-bottom:1.5rem">
+                <h3 style="font-size:1.25rem">Criar Novo Objetivo</h3>
+                <button class="btn-ghost btn-icon" onclick="app.closeModals()"><i data-lucide="x"
+                        size="18"></i></button>
+            </div>
+            <form onsubmit="app.handleTopObjectiveSubmit(event)">
+                <input type="hidden" name="id">
+                <div class="form-group">
+                    <label>Título do Objetivo</label>
+                    <input type="text" name="title" class="form-input" required
+                        placeholder="Ex: Crescimento Sustentável">
+                </div>
+                <div class="form-group">
+                    <label>Responsável</label>
+                    <input type="text" name="owner" class="form-input" required placeholder="Nome do responsável">
+                </div>
+                <div class="form-group">
+                    <label>Previsão</label>
+                    <input type="date" name="dueDate" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea name="description" class="form-input"
+                        placeholder="Descreva este objetivo estratégico..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="app.closeModals()">Cancelar</button>
+                    <button type="submit" class="btn">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-objective" class="modal-overlay">
+        <div class="modal">
+            <div style="display:flex; justify-content:space-between; margin-bottom:1.5rem">
+                <h3 style="font-size:1.25rem">Criar Nova Iniciativa</h3>
+                <button class="btn-ghost btn-icon" onclick="app.closeModals()"><i data-lucide="x"
+                        size="18"></i></button>
+            </div>
+            <form onsubmit="app.handleObjectiveSubmit(event)">
+                <input type="hidden" name="id">
+                <div class="form-group">
+                    <label>Título da Iniciativa</label>
+                    <input type="text" name="title" class="form-input" required
+                        placeholder="Ex: Expandir vendas online">
+                </div>
+                <div class="form-group">
+                    <label>Responsável</label>
+                    <input type="text" name="owner" class="form-input" required placeholder="Nome do responsável">
+                </div>
+                <div class="form-group">
+                    <label>Previsão de Conclusão</label>
+                    <input type="date" name="dueDate" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea name="description" class="form-input"
+                        placeholder="Descreva o propósito desta iniciativa..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="app.closeModals()">Cancelar</button>
+                    <button type="submit" class="btn">Criar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-task" class="modal-overlay">
+        <div class="modal">
+            <div style="display:flex; justify-content:space-between; margin-bottom:1.5rem">
+                <h3 style="font-size:1.25rem">Nova Ação</h3>
+                <button class="btn-ghost btn-icon" onclick="app.closeModals()"><i data-lucide="x"
+                        size="18"></i></button>
+            </div>
+            <form onsubmit="app.handleTaskSubmit(event)">
+                <div class="form-group">
+                    <label>Título da Ação</label>
+                    <input type="text" name="title" class="form-input" required
+                        placeholder="Ex: Levantamento de requisitos">
+                </div>
+                <div class="form-group">
+                    <label>Descrição (opcional)</label>
+                    <textarea name="description" class="form-input"
+                        placeholder="Detalhes sobre o que deve ser feito..."></textarea>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem">
+                    <div class="form-group">
+                        <label>Responsável</label>
+                        <input type="text" name="assignee" class="form-input" required placeholder="Nome">
+                    </div>
+                    <div class="form-group">
+                        <label>Prioridade</label>
+                        <select name="priority" class="form-input">
+                            <option value="Normal">Normal</option>
+                            <option value="Urgente">Urgente</option>
+                            <option value="Importante">Importante</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Estimativa de Custo (R$)</label>
+                        <input type="number" name="cost" class="form-input" step="0.01" min="0" placeholder="0,00">
+                    </div>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem">
+                    <div class="form-group">
+                        <label>Data de Início</label>
+                        <input type="date" name="startDate" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Data de Conclusão</label>
+                        <input type="date" name="dueDate" class="form-input" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="app.closeModals()">Cancelar</button>
+                    <button type="submit" class="btn">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
